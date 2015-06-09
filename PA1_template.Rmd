@@ -1,3 +1,10 @@
+---
+title: "Reproducible Research: Peer Assessment 1"
+output: 
+  html_document:
+    keep_md: true
+---
+
 ```{r global_options, , include=FALSE}
 knitr::opts_chunk$set(echo=TRUE)
 ```
@@ -7,12 +14,6 @@ set.seed(1234)
 library(ggplot2)
 library(dplyr)
 ```
----
-title: "Reproducible Research: Peer Assessment 1"
-output: 
-  html_document:
-    keep_md: true
----
 This report analyses the data set available [here](https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2Factivity.zip), that contains information on a subject's activity measured in steps with a monitoring frequency of 5 minutes. The report is structured
 per the assignment found in [README.html](README.html). 
 
@@ -40,7 +41,8 @@ The mean of the total steps taken per day is `r mean_steps`, while the median is
 ## What is the average daily activity pattern?
 ```{r}
 mean_interval <- step_data %>% group_by(interval) %>% summarise(mean_steps = mean(steps, na.rm = T))
-ggplot(mean_interval, aes(interval, mean_steps)) + geom_line(col = "darkblue") + xlab("Interval") + ylab("Average number of steps")
+ggplot(mean_interval, aes(interval, mean_steps)) + geom_line(col = "darkblue") 
+      + xlab("Interval") + ylab("Average number of steps")
 max_val <- max(mean_interval$mean)
 max_interval <- mean_interval[mean_interval$mean == max_val,"interval"]
 ```
@@ -101,7 +103,8 @@ mean_weekdays <- imputed_data %>% mutate(weekend = isWeekend(date))
 mean_weekdays$weekend <- as.factor(mean_weekdays$weekend)
 levels(mean_weekdays$weekend) <- c("Weekday", "Weekend")
 mean_weekdays <- mean_weekdays %>% group_by(interval, weekend) %>% summarise(mean_steps = mean(steps))
-ggplot(mean_weekdays, aes(interval, mean_steps)) + geom_line(col = "darkblue") + xlab("Interval") + ylab("Average number of steps") + facet_grid(weekend~.) 
+ggplot(mean_weekdays, aes(interval, mean_steps)) + geom_line(col = "darkblue") 
+      + xlab("Interval") + ylab("Average number of steps") + facet_grid(weekend~.) 
 ```
 
 The activity profiles differ in a number of ways. In particular, the change in activity in the morning is less gradual during weekdays. At noon, a higher number of steps are recorded during weekdays. Finally, throughout the day there's also a higher overall level of activity in the weekend. 
