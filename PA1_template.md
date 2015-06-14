@@ -1,4 +1,9 @@
-# Reproducible Research: Peer Assessment 1
+---
+title: "Reproducible Research: Peer Assessment 1"
+output: 
+  html_document:
+    keep_md: true
+---
 
 
 
@@ -23,7 +28,7 @@ ggplot(data=totals, aes(totals$total)) +
   xlab("Total steps per day") + ylab("Frequency")
 ```
 
-![](PA1_template_files/figure-html/histogram-1.png) 
+![plot of chunk histogram](assets/fig/histogram-1.png) 
 
 
 ```r
@@ -36,10 +41,11 @@ The mean of the total steps taken per day is 9354.23, while the median is 10395.
 
 ```r
 mean_interval <- step_data %>% group_by(interval) %>% summarise(mean_steps = mean(steps, na.rm = T))
-ggplot(mean_interval, aes(interval, mean_steps)) + geom_line(col = "darkblue") + xlab("Interval") + ylab("Average number of steps")
+ggplot(mean_interval, aes(interval, mean_steps)) + geom_line(col = "darkblue") + 
+  xlab("Interval") + ylab("Average number of steps")
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-4-1.png) 
+![plot of chunk averageActivity](assets/fig/averageActivity-1.png) 
 
 ```r
 max_val <- max(mean_interval$mean)
@@ -71,11 +77,11 @@ imputed_data <- select(imputed_data, -mean_steps)
 totals_imp <- imputed_data %>% group_by(date) %>% summarise(total = sum(steps))
 ggplot(data=totals, aes(totals$total)) + 
   geom_histogram(col="darkred", fill="darkred", alpha = .4) +
-  ggtitle("Histogram of total number of steps taken per day with NAs imputed by\ninterval mean") +
+  ggtitle("Histogram of total number of steps taken per day with NAs imputed by\ninterval mean") + 
   xlab("Total steps per day") + ylab("Frequency")
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-6-1.png) 
+![plot of chunk imputed_hist](assets/fig/imputed_hist-1.png) 
 
 ```r
 mean_steps_imp <- round(mean(totals$total),2)
@@ -93,11 +99,11 @@ combined_data <- rbind(data.frame(Imputed="Yes", obs=totals_imp$total),
 
 ggplot(combined_data, aes(x = combined_data$obs, fill = Imputed)) + scale_fill_manual(values=cbPalette) +
   geom_histogram(colour="black", position="dodge", alpha = .4) +
-  ggtitle("Histogram of the step counts with imputed and non-imputed\n missing values") +
+  ggtitle("Histogram of the step counts with imputed and non-imputed\n missing values") + 
   xlab("Total steps per day") + ylab("Frequency")
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-7-1.png) 
+![plot of chunk imputed_hist_diff](assets/fig/imputed_hist_diff-1.png) 
 As expected, the frequency of zero count days is significantly reduced, while the frequency
 of days with a step count around the average total number of days is increased with the same amount. 
 This is a consequence of the fact that we replace the missing values with the average value of the step 
@@ -112,9 +118,10 @@ mean_weekdays <- imputed_data %>% mutate(weekend = isWeekend(date))
 mean_weekdays$weekend <- as.factor(mean_weekdays$weekend)
 levels(mean_weekdays$weekend) <- c("Weekday", "Weekend")
 mean_weekdays <- mean_weekdays %>% group_by(interval, weekend) %>% summarise(mean_steps = mean(steps))
-ggplot(mean_weekdays, aes(interval, mean_steps)) + geom_line(col = "darkblue") + xlab("Interval") + ylab("Average number of steps") + facet_grid(weekend~.) 
+ggplot(mean_weekdays, aes(interval, mean_steps)) + geom_line(col = "darkblue") + 
+  xlab("Interval") + ylab("Average number of steps") + facet_grid(weekend~.) 
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-8-1.png) 
+![plot of chunk weekdays](assets/fig/weekdays-1.png) 
 
 The activity profiles differ in a number of ways. In particular, the change in activity in the morning is less gradual during weekdays. At noon, a higher number of steps are recorded during weekdays. Finally, throughout the day there's also a higher overall level of activity in the weekend. 
