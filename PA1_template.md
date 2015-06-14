@@ -1,9 +1,4 @@
----
-title: "Reproducible Research: Peer Assessment 1"
-output: 
-  html_document:
-    keep_md: true
----
+# Reproducible Research: Peer Assessment 1
 
 
 
@@ -28,7 +23,7 @@ ggplot(data=totals, aes(totals$total)) +
   xlab("Total steps per day") + ylab("Frequency")
 ```
 
-![plot of chunk histogram](assets/fig/histogram-1.png) 
+![](PA1_template_files/figure-html/histogram-1.png) 
 
 
 ```r
@@ -45,7 +40,7 @@ ggplot(mean_interval, aes(interval, mean_steps)) + geom_line(col = "darkblue") +
   xlab("Interval") + ylab("Average number of steps")
 ```
 
-![plot of chunk averageActivity](assets/fig/averageActivity-1.png) 
+![](PA1_template_files/figure-html/averageActivity-1.png) 
 
 ```r
 max_val <- max(mean_interval$mean)
@@ -81,7 +76,7 @@ ggplot(data=totals, aes(totals$total)) +
   xlab("Total steps per day") + ylab("Frequency")
 ```
 
-![plot of chunk imputed_hist](assets/fig/imputed_hist-1.png) 
+![](PA1_template_files/figure-html/imputed_hist-1.png) 
 
 ```r
 mean_steps_imp <- round(mean(totals$total),2)
@@ -103,7 +98,7 @@ ggplot(combined_data, aes(x = combined_data$obs, fill = Imputed)) + scale_fill_m
   xlab("Total steps per day") + ylab("Frequency")
 ```
 
-![plot of chunk imputed_hist_diff](assets/fig/imputed_hist_diff-1.png) 
+![](PA1_template_files/figure-html/imputed_hist_diff-1.png) 
 As expected, the frequency of zero count days is significantly reduced, while the frequency
 of days with a step count around the average total number of days is increased with the same amount. 
 This is a consequence of the fact that we replace the missing values with the average value of the step 
@@ -122,6 +117,6 @@ ggplot(mean_weekdays, aes(interval, mean_steps)) + geom_line(col = "darkblue") +
   xlab("Interval") + ylab("Average number of steps") + facet_grid(weekend~.) 
 ```
 
-![plot of chunk weekdays](assets/fig/weekdays-1.png) 
+![](PA1_template_files/figure-html/weekdays-1.png) 
 
 The activity profiles differ in a number of ways. In particular, the change in activity in the morning is less gradual during weekdays. At noon, a higher number of steps are recorded during weekdays. Finally, throughout the day there's also a higher overall level of activity in the weekend. 
