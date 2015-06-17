@@ -73,8 +73,8 @@ ggplot(data=totals_imp, aes(totals_imp$total)) +
   ggtitle("Histogram of total number of steps taken per day with NAs imputed by\ninterval mean") + 
   xlab("Total steps per day") + ylab("Frequency")
 
-mean_steps_imp <- round(mean(totals$total),2)
-median_steps_imp <- median(totals$total)
+mean_steps_imp <- round(mean(totals_imp$total),2)
+median_steps_imp <- median(totals_imp$total)
 ```
 With missing values replaced, the mean of the total steps taken per day is `r mean_steps_imp`, while the median is `r median_steps_imp`. The difference with the non-imputed means is significant. Especially for the mean as more days have a count of zero when missing values for the amount of steps are not replaced by the interval mean. 
 

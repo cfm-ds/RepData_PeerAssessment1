@@ -90,10 +90,10 @@ ggplot(data=totals_imp, aes(totals_imp$total)) +
 ![plot of chunk imputed_hist](figure/imputed_hist-1.png) 
 
 ```r
-mean_steps_imp <- round(mean(totals$total),2)
-median_steps_imp <- median(totals$total)
+mean_steps_imp <- round(mean(totals_imp$total),2)
+median_steps_imp <- median(totals_imp$total)
 ```
-With missing values replaced, the mean of the total steps taken per day is 9354.23, while the median is 10395. The difference with the non-imputed means is significant. Especially for the mean as more days have a count of zero when missing values for the amount of steps are not replaced by the interval mean. 
+With missing values replaced, the mean of the total steps taken per day is 1.076619 &times; 10<sup>4</sup>, while the median is 1.0766189 &times; 10<sup>4</sup>. The difference with the non-imputed means is significant. Especially for the mean as more days have a count of zero when missing values for the amount of steps are not replaced by the interval mean. 
 
 The following graph shows a combined plot of the two histograms to highlight the differences.
 
