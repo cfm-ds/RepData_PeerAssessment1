@@ -39,10 +39,10 @@ median_steps <- median(totals$total)
 The mean of the total steps taken per day is `r mean_steps`, while the median is `r median_steps`.
 
 ## What is the average daily activity pattern?
-```{r}
+```{r, averageActivity, fig.width=8, fig.height=6}
 mean_interval <- step_data %>% group_by(interval) %>% summarise(mean_steps = mean(steps, na.rm = T))
-ggplot(mean_interval, aes(interval, mean_steps)) + geom_line(col = "darkblue") 
-      + xlab("Interval") + ylab("Average number of steps")
+ggplot(mean_interval, aes(interval, mean_steps)) + geom_line(col = "darkblue") + 
+  xlab("Interval") + ylab("Average number of steps")
 max_val <- max(mean_interval$mean)
 max_interval <- mean_interval[mean_interval$mean == max_val,"interval"]
 ```
@@ -57,7 +57,7 @@ perc_nas <- round(mean(na_index) * 100,2)
 The data set contains `r total_nas` missing values, that is `r perc_nas`% of the values are missing. 
 
 The following histogram shows the total number of steps taken per day for our subject, with the missing values replaced by the interval mean across all days. 
-```{r, fig.width=8, fig.height=6}
+```{r, imputed_hist, fig.width=8, fig.height=6}
 # Add mean of interval with recycling
 imputed_data <- step_data
 imputed_data$mean_steps <- mean_interval$mean_steps
@@ -68,9 +68,9 @@ imputed_data <- select(imputed_data, -mean_steps)
 
 #Histogram
 totals_imp <- imputed_data %>% group_by(date) %>% summarise(total = sum(steps))
-ggplot(data=totals, aes(totals$total)) + 
+ggplot(data=totals_imp, aes(totals_imp$total)) + 
   geom_histogram(col="darkred", fill="darkred", alpha = .4) +
-  ggtitle("Histogram of total number of steps taken per day with NAs imputed by\ninterval mean") +
+  ggtitle("Histogram of total number of steps taken per day with NAs imputed by\ninterval mean") + 
   xlab("Total steps per day") + ylab("Frequency")
 
 mean_steps_imp <- round(mean(totals$total),2)
@@ -79,7 +79,7 @@ median_steps_imp <- median(totals$total)
 With missing values replaced, the mean of the total steps taken per day is `r mean_steps_imp`, while the median is `r median_steps_imp`. The difference with the non-imputed means is significant. Especially for the mean as more days have a count of zero when missing values for the amount of steps are not replaced by the interval mean. 
 
 The following graph shows a combined plot of the two histograms to highlight the differences.
-```{r, fig.width=16, fig.height=6}
+```{r, imputed_hist_diff, fig.width=16, fig.height=6}
 cbPalette <- c("darkred", "darkblue")
 
 combined_data <- rbind(data.frame(Imputed="Yes", obs=totals_imp$total),
@@ -87,7 +87,7 @@ combined_data <- rbind(data.frame(Imputed="Yes", obs=totals_imp$total),
 
 ggplot(combined_data, aes(x = combined_data$obs, fill = Imputed)) + scale_fill_manual(values=cbPalette) +
   geom_histogram(colour="black", position="dodge", alpha = .4) +
-  ggtitle("Histogram of the step counts with imputed and non-imputed\n missing values") +
+  ggtitle("Histogram of the step counts with imputed and non-imputed\n missing values") + 
   xlab("Total steps per day") + ylab("Frequency")
 ```
 As expected, the frequency of zero count days is significantly reduced, while the frequency
@@ -97,14 +97,14 @@ count in their given interval.
 
 ## Are there differences in activity patterns between weekdays and weekends?
 The following plot shows the average amount of steps taken in a day per 5 minute interval, split out over weekdays and weekend days.
-```{r}
+```{r, weekdays, fig.width=8, fig.height=6}
 library("timeDate")
 mean_weekdays <- imputed_data %>% mutate(weekend = isWeekend(date))
 mean_weekdays$weekend <- as.factor(mean_weekdays$weekend)
 levels(mean_weekdays$weekend) <- c("Weekday", "Weekend")
 mean_weekdays <- mean_weekdays %>% group_by(interval, weekend) %>% summarise(mean_steps = mean(steps))
-ggplot(mean_weekdays, aes(interval, mean_steps)) + geom_line(col = "darkblue") 
-      + xlab("Interval") + ylab("Average number of steps") + facet_grid(weekend~.) 
+ggplot(mean_weekdays, aes(interval, mean_steps)) + geom_line(col = "darkblue") + 
+  xlab("Interval") + ylab("Average number of steps") + facet_grid(weekend~.) 
 ```
 
 The activity profiles differ in a number of ways. In particular, the change in activity in the morning is less gradual during weekdays. At noon, a higher number of steps are recorded during weekdays. Finally, throughout the day there's also a higher overall level of activity in the weekend. 
